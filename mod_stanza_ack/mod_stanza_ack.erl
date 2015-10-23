@@ -41,6 +41,7 @@
 -type opts()    :: [{name(), value()}, ...].
 
 -define(NS_RECEIPTS, <<"urn:xmpp:receipts">>).
+-define(TYPE_RECEIPTS, <<"chat">>).
 -define(EJABBERD_DEBUG, true).
 
 %% ====================================================================
@@ -84,7 +85,7 @@ on_user_send_packet(Packet, _C2SState, From, To) ->
 send_ack_response(From, To, Pkt, RegisterFromJid, RegisterToJid) ->
     ReceiptId = xml:get_tag_attr_s(<<"id">>, Pkt),
     XmlBody = 	 #xmlel{name = <<"message">>,
-              		    attrs = [{<<"from">>, From}, {<<"to">>, To}],
+              		    attrs = [{<<"from">>, From}, {<<"to">>, To}, {<<"type">>, ?TYPE_RECEIPTS}], 
               		    children =
               			[#xmlel{name = <<"received">>,
               				attrs = [{<<"xmlns">>, ?NS_RECEIPTS}, {<<"id">>, ReceiptId}],
